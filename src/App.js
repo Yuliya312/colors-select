@@ -1,26 +1,58 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
 import './App.css';
+import { DropDown } from './DropDown/DropDown';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const colors = [
+  { id: 1, name: 'red' },
+  { id: 2, name: 'green' },
+  { id: 3, name: 'blue' },
+];
+
+export class App extends Component {
+  state = {
+    selectedColor: colors[0].id,
+    colorsOptions: colors.map(({ id, name }) => ({
+      value: id,
+      label: name,
+    })),
+  };
+
+  setBlue = () => {
+    this.setSelectedColor(3);
+  }
+
+  setSelectedColor = (colorId) => {
+    this.setState({ selectedColor: colorId });
+  }
+
+  render() {
+    const { selectedColor, colorsOptions } = this.state;
+
+    return (
+      <div className="App">
+        <header className="App-header">
+          Colors selector
+
+          <DropDown
+            value={selectedColor}
+            onChange={this.setSelectedColor}
+            options={colorsOptions}
+          />
+
+          {/* <DropDown
+            value={1}
+            onChange={event => console.log(event.target.value)}
+            options={[{ value: 1, label: 'One' }, { value: 2, label: 'Two' }]}
+          /> */}
+
+          <button
+            type="button"
+            onClick={this.setBlue}
+          >
+            Set blue
+          </button>
+        </header>
+      </div>
+    );
+  }
 }
-
-export default App;
